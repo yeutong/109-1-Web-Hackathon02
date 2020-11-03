@@ -105,7 +105,7 @@ class Sudoku extends Component {
                 num = (event.keyCode - 96).toString()
             }
 
-            console.log(this.checkConflict(num));
+            // console.log(this.checkConflict(num));
             if (num === "0" || this.checkConflict(num)) {
                 // console.log("one time")
                 tmp_gridValues[this.state.selectedGrid.row_index][this.state.selectedGrid.col_index] = (event.keyCode - 48).toString();
