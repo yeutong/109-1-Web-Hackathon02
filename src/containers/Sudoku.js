@@ -26,21 +26,59 @@ class Sudoku extends Component {
         // TODO
 
         // Useful hints:
-        // console.log(row_index, col_index)
-        // console.log(this.state.selectedGrid)
+        // console.log(row_index, col_index);
+        // console.log(this.state.selectedGrid);
+        this.setState({ selectedGrid: { row_index: row_index, col_index: col_index } });
     }
+
+    // checkConflict = (event) => {
+    //     var tmp_gridValues = this.state.gridValues;
+    //     if 
+    // } 
+
+    // extractArray(array, col_index, row_index) {
+    //     let rt = []
+    //     for (let i = row_index; i < row_index + 3; i++) {
+    //         for (let j = col_index; j < col_index + 3; j++) {
+    //             rt.push(array[i][j])
+    //         }
+    //     }
+    //     return rt;
+    // }
 
     handleKeyDownEvent = (event) => {
         // TODO
 
         // Useful hints:
         // console.log(event)
-        // if (this.state.gridValues !== null && this.state.selectedGrid.row_index !== -1 && this.state.selectedGrid.col_index !== -1 && (event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105)) {}
+        // console.log(event.keyCode === 48)
+
+        var tmp_gridValues = this.state.gridValues;
+        
+        if (this.state.gridValues !== null && this.state.selectedGrid.row_index !== -1 && this.state.selectedGrid.col_index !== -1 && ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105))) {
+            if (event.keyCode >= 48 && event.keyCode <= 57) {
+                // tmp_gridValues[this.state.selectedGrid.row_index][this.state.selectedGrid.col_index] = (event.keyCode - 48 === 0) ? '': event.keyCode - 48;
+                tmp_gridValues[this.state.selectedGrid.row_index][this.state.selectedGrid.col_index] = (event.keyCode - 48).toString();
+                // console.log(tmp_gridValues)
+                this.setState({ gridValues: tmp_gridValues})
+            } else {
+                tmp_gridValues[this.state.selectedGrid.row_index][this.state.selectedGrid.col_index] = (event.keyCode - 96).toString();
+                // console.log(tmp_gridValues)
+                this.setState({ gridValues: tmp_gridValues})
+            }
+        }
         // if (this.state.problem.content[this.state.selectedGrid.row_index][this.state.selectedGrid.col_index] === "0") {}
     }
 
     handleScreenKeyboardInput = (num) => {
         // TODO
+        // console.log(num)
+        var tmp_gridValues = this.state.gridValues;
+        if (this.state.gridValues !== null && this.state.selectedGrid.row_index !== -1 && this.state.selectedGrid.col_index !== -1) {
+            tmp_gridValues[this.state.selectedGrid.row_index][this.state.selectedGrid.col_index] = num.toString() ;
+            // console.log(tmp_gridValues)
+            this.setState({ gridValues: tmp_gridValues})
+        }
     }
 
     componentDidMount = () => {
