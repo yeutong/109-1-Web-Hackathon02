@@ -41,25 +41,34 @@ class Sudoku extends Component {
         const col_index = this.state.selectedGrid.col_index
         const row_start = this.state.selectedGrid.row_index - this.state.selectedGrid.row_index%3;
         const col_start = this.state.selectedGrid.col_index - this.state.selectedGrid.col_index%3;
+        var tmp_conflict = [];
         var check = true;
         for (let i = row_start; i < row_start + 3; i++) {
             for (let j = col_start; j < col_start + 3; j++) {
-                if (tmp_gridValues[i][j] === num) {
+                if (tmp_gridValues[i][j] === num && (i !== row_index || j !== col_index)) {
                     check = false;
+                    tmp_conflict.push({row_index: i, col_index: j});
                 }
             }
         }
         for (let i = 0; i <= 8; i++) {
-            if (tmp_gridValues[i][col_index] === num) {
+            if (tmp_gridValues[i][col_index] === num && (i !== row_index)) {
                 check = false;
+                tmp_conflict.push({row_index: i, col_index: col_index});
             }
         }
 
         for (let j = 0; j <= 8; j++) {
-            if (tmp_gridValues[row_index][j] === num) {
+            if (tmp_gridValues[row_index][j] === num && (j !== col_index)) {
                 check = false;
+                tmp_conflict.push({row_index: row_index, col_index: j});
             }
         }
+
+        if (num === "0") {
+            tmp_conflict = [];
+        }
+        this.setState({ conflicts: tmp_conflict})
         return check;
     } 
 
@@ -90,7 +99,7 @@ class Sudoku extends Component {
             }
 
             console.log(this.checkConflict(num));
-            if (this.checkConflict(num) || num === "0") {
+            if (num === "0" || this.checkConflict(num)) {
                 // console.log("one time")
                 tmp_gridValues[this.state.selectedGrid.row_index][this.state.selectedGrid.col_index] = (event.keyCode - 48).toString();
                 // console.log(tmp_gridValues)
