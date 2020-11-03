@@ -69,6 +69,13 @@ class Sudoku extends Component {
             tmp_conflict = [];
         }
         this.setState({ conflicts: tmp_conflict})
+
+        // if (tmp_conflict !== []) {
+        //     this.setState({ gameBoardBorderStyle: "8px solid #E77" });
+        //     // setTimeout(() => { this.setState({ gameBordBoarderStyle: "8px solid #333" }); }, 1000);
+        // }
+
+
         return check;
     } 
 
@@ -132,6 +139,9 @@ class Sudoku extends Component {
 
     componentDidMount = () => {
         window.addEventListener('keydown', this.handleKeyDownEvent);
+        // if (this.state.conflicts !== []) {
+        //     setTimeout(() => { this.setState({ gameBordBoarderStyle: "8px solid #333" }); }, 1000);
+        // }
     }
 
     loadProblem = async (name) => {
