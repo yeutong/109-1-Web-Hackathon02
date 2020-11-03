@@ -28,23 +28,40 @@ class Sudoku extends Component {
         // Useful hints:
         // console.log(row_index, col_index);
         // console.log(this.state.selectedGrid);
-        this.setState({ selectedGrid: { row_index: row_index, col_index: col_index } });
+        // this.setState({ selectedGrid: { row_index: row_index, col_index: col_index } });
+
+        if (this.state.problem.content[row_index][col_index] === "0") {
+            this.setState({ selectedGrid: { row_index: row_index, col_index: col_index } });
+        }
     }
 
-    // checkConflict = (event) => {
-    //     var tmp_gridValues = this.state.gridValues;
-    //     if 
-    // } 
+    checkConflict = (num) => {
+        var tmp_gridValues = this.state.gridValues;
+        const row_index = this.state.selectedGrid.row_index
+        const col_index = this.state.selectedGrid.col_index
+        const row_start = this.state.selectedGrid.row_index - this.state.selectedGrid.row_index%3;
+        const col_start = this.state.selectedGrid.col_index - this.state.selectedGrid.col_index%3;
+        var check = true;
+        for (let i = row_start; i < row_start + 3; i++) {
+            for (let j = col_start; j < col_start + 3; j++) {
+                if (tmp_gridValues[i][j] === num) {
+                    check = false;
+                }
+            }
+        }
+        for (let i = 0; i <= 8; i++) {
+            if (tmp_gridValues[i][col_index] === num) {
+                check = false;
+            }
+        }
 
-    // extractArray(array, col_index, row_index) {
-    //     let rt = []
-    //     for (let i = row_index; i < row_index + 3; i++) {
-    //         for (let j = col_index; j < col_index + 3; j++) {
-    //             rt.push(array[i][j])
-    //         }
-    //     }
-    //     return rt;
-    // }
+        for (let j = 0; j <= 8; j++) {
+            if (tmp_gridValues[row_index][j] === num) {
+                check = false;
+            }
+        }
+        return check;
+    } 
 
     handleKeyDownEvent = (event) => {
         // TODO
@@ -56,16 +73,32 @@ class Sudoku extends Component {
         var tmp_gridValues = this.state.gridValues;
         
         if (this.state.gridValues !== null && this.state.selectedGrid.row_index !== -1 && this.state.selectedGrid.col_index !== -1 && ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105))) {
+            // if (event.keyCode >= 48 && event.keyCode <= 57) {
+            //     checkConflict()
+            //     // tmp_gridValues[this.state.selectedGrid.row_index][this.state.selectedGrid.col_index] = (event.keyCode - 48 === 0) ? '': event.keyCode - 48;
+            //     // console.log(tmp_gridValues)
+            //     this.setState({ gridValues: tmp_gridValues})
+            // } else {
+            //     tmp_gridValues[this.state.selectedGrid.row_index][this.state.selectedGrid.col_index] = (event.keyCode - 96).toString();
+            //     // console.log(tmp_gridValues)
+            // }
+            var num;
             if (event.keyCode >= 48 && event.keyCode <= 57) {
-                // tmp_gridValues[this.state.selectedGrid.row_index][this.state.selectedGrid.col_index] = (event.keyCode - 48 === 0) ? '': event.keyCode - 48;
+                num = (event.keyCode - 48).toString()
+            } else {
+                num = (event.keyCode - 96).toString()
+            }
+
+            console.log(this.checkConflict(num));
+            if (this.checkConflict(num) || num === "0") {
+                // console.log("one time")
                 tmp_gridValues[this.state.selectedGrid.row_index][this.state.selectedGrid.col_index] = (event.keyCode - 48).toString();
                 // console.log(tmp_gridValues)
                 this.setState({ gridValues: tmp_gridValues})
-            } else {
-                tmp_gridValues[this.state.selectedGrid.row_index][this.state.selectedGrid.col_index] = (event.keyCode - 96).toString();
-                // console.log(tmp_gridValues)
-                this.setState({ gridValues: tmp_gridValues})
             }
+
+
+
         }
         // if (this.state.problem.content[this.state.selectedGrid.row_index][this.state.selectedGrid.col_index] === "0") {}
     }
@@ -75,9 +108,16 @@ class Sudoku extends Component {
         // console.log(num)
         var tmp_gridValues = this.state.gridValues;
         if (this.state.gridValues !== null && this.state.selectedGrid.row_index !== -1 && this.state.selectedGrid.col_index !== -1) {
-            tmp_gridValues[this.state.selectedGrid.row_index][this.state.selectedGrid.col_index] = num.toString() ;
-            // console.log(tmp_gridValues)
-            this.setState({ gridValues: tmp_gridValues})
+            // tmp_gridValues[this.state.selectedGrid.row_index][this.state.selectedGrid.col_index] = num.toString() ;
+            // // console.log(tmp_gridValues)
+            // this.setState({ gridValues: tmp_gridValues})
+
+            if (this.checkConflict(num.toString()) || num.toString() === "0") {
+                // console.log("one time")
+                tmp_gridValues[this.state.selectedGrid.row_index][this.state.selectedGrid.col_index] = num.toString();
+                // console.log(tmp_gridValues)
+                this.setState({ gridValues: tmp_gridValues})
+            }
         }
     }
 
